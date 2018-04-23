@@ -1,6 +1,6 @@
 
 
-import './scss/test.css';
+// import './scss/test.css';
 import './scss/index.scss';
 
 function test() {
