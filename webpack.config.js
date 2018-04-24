@@ -6,18 +6,21 @@
     组件化
 
 */
+
+// development
+
 const path = require("path");
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = {
+var DEV = {
     //
     // 'production' 将会自动压缩打包js
     mode: 'development',
     //
     entry: {
         index: './src/index.js',
-        css: './src/scss/index.scss'
+        // css: './src/scss/test.css'
     },
     //
     output: {
@@ -27,27 +30,56 @@ module.exports = {
     //
     module: {
         rules: [
+
             {
                 test: /\.scss$/,
-                // use: 'sass-loader'，
+                // exclude: /^node_modules$/,
                 use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: ['css-loader', 'sass-loader']
-                })
+                    fallback: "style-loader",
+                    use: [
+                        'css-loader',
+                        'sass-loader'
+                    ]
+                }),
+                // use: [
+                //     "style-loader",
+                //     {
+                //         loader: "css-loader"
+                //     },
+                //     "sass-loader"
+                // ]
             },
+
             {
                 test: /\.css$/,
-                use: 'css-loader'
+                use: [{
+                    loader: 'style-loader'
+                }, {
+                    loader: 'css-loader',
+                    options: {
+                        // modules: true
+                    }
+                }]
             },
-            // {
-            //     test: /\.js$/
-            // }
+
         ]
     },
+    //
+    devServer: {
+        contentBase: './src/'
+    },
+    //
+    target: 'node',
+
     plugins: [
+        new ExtractTextPlugin("[name].css")
         // new ExtractTextPlugin({
         //     filename: 'style.css'
         // })
     ]
 
 }
+
+
+
+module.exports = DEV;
